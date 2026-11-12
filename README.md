@@ -93,7 +93,7 @@ OS name: "windows 11", version: "10.0", arch: "amd64", family: "windows"
 | BDU14 | best | 37→42 | p-use T; 37→38T→39T→40→41→42T | `singleDayAtThreshold`; `allDefsMixedRun` | Тийм |
 | BDU15 | best | 37→53 | p-use F; 37→38F→49→50→53F | `allDefsEmpty`; `allAbsentZeroThreshold` | Тийм |
 | BDU16 | best | 43→42 | p-use T/F; 43→38T→39T→40→41→42T/F | `allDefsMixedRun` | Тийм |
-| BDU17 | best | 43→53 | p-use T/F; 43→(zero or more loops)→38F→49→50→53T/F | `allDefsMixedRun`; `singleDayAtThreshold`; `fiveDaysBelowThreshold` | Тийм |
+| BDU17 | best | 43→53 | p-use T/F; 43→(43-р мөрөөр дахин тодорхойлолтгүй алхмууд)→38F→49→50→53T/F | `allDefsMixedRun`; `singleDayAtThreshold`; `fiveDaysBelowThreshold` | Тийм |
 | BDU18 | a | 38→39 | p-use T/F; 38T→39T/F | `allDefsMixedRun`; `allAbsentZeroThreshold` | Тийм |
 | BDU19 | score | 49→54 | c-use; 49→50F→53T→54 | `fiveDaysBelowThreshold` | Тийм |
 | BDU20 | score | 49→56 | c-use; 49→50F→53F→56 | `allDefsEmpty` | Тийм |
@@ -111,7 +111,7 @@ OS name: "windows 11", version: "10.0", arch: "amd64", family: "windows"
 
 Bonus-ийн all-defs-д **2 тест зайлшгүй**. `score`-ийн 49-р мөрийн definition хэрэглэхийн тулд `present >= threshold` нөхцөл худал байх ёстой. Үнэн бол 51-р мөр `score`-ийг use-д хүрэхээс өмнө дахин тодорхойлно. Харин 51-р мөрийн definition-ийг use-д хүргэхэд уг нөхцөл үнэн байх шаардлагатай. Нөхцөл давталтын дараа нэг удаа л шалгагддаг тул нэг дуудлага хоёр score definition-ийг хоёуланг нь use-д хүргэх боломжгүй. Хоёр тестээр бусад бүх definition-ийг мөн use-д хүргэсэн.
 
-`results/mvn-verify-alldefs.txt`-д нийт 4 тест амжилттай (gcd 2, bonus 2) гэж гарсан. `results/jacoco-alldefs.csv`-ийн `DataFlowTargets` мөр: branch 14/16 (2 missed), line 22/24 (2 missed). All-defs нь branch-ийн 100%-ийг батлахгүй: жишээ нь `best >= 5`-ийн үнэн, худал үр дүнг энэ шат хоёуланг нь дайраагүй.
+`results/mvn-verify-alldefs.txt`-д нийт 4 тест амжилттай (gcd 2, bonus 2) гэж гарсан. `results/jacoco-alldefs.csv`-ийн `DataFlowTargets` мөр: branch 14/16 (2 missed), line 22/24 (2 missed). All-defs нь branch-ийн 100%-ийг батлахгүй: энэ шат `attendance == null` болон `threshold < 0` оролтын шалгалтын үнэн салааг хамраагүй тул хоёр branch дутсан.
 
 Branch хамралт 100% болсон ч DU хүснэгтэд хос үлдэж болно. Үүнийг `results/mvn-verify-branch-example.txt`-ийн сонгосон 6 тест (gcd 2, `allDefsMixedRun`, `allDefsEmpty`, `nullAttendance`, `negativeThreshold`) харуулна: `results/jacoco-branch-example.csv`-д branch 16/16 боловч BDU19 (`score:49→54`) огт хүрээгүй. Энэ хос зөвхөн `present < threshold` ба `best >= 5` нэг дор биелэхэд хэрэгжинэ; сонгосон тестүүдэд тэр нөхцөл байхгүй. Иймээс JaCoCo branch-ийн 100% нь хувьсагчийн def-clear зам бүрийг шалгасны нотолгоо биш.
 ### B5. Эцсийн хэмжилт
@@ -125,7 +125,7 @@ Branch хамралт 100% болсон ч DU хүснэгтэд хос үлдэ
 | Мутаци | Тестийн үр дүн | Дүгнэлт |
 |---|---|---|
 | M1 `streak = streak + 1`-ийг устгах | 9 тестээс 2 унав. `allDefsMixedRun`: expected 8, was 5; `fiveDaysBelowThreshold`: expected 3, was 0. | Дутуу update-ийг DU тестүүд илрүүлэв. Бүрэн лог: `results/mvn-test-M1.txt`. |
-| M2 `best = streak` → `best = present` | Эхний all-DU-pairs багцын 9 тест бүгд тэнцэв. | Бүх DU хос хамарсан ч өгөгдлийн утгын алдаа илрэх баталгаа биш. `results/mvn-test-M2.txt`. |
+| M2 `best = streak` → `best = present` | Эхний all-DU-pairs багцын 9 тест бүгд тэнцэв. | `allDefsMixedRun`-д тасалсны дараах update-уудын үед `(present, streak)` нь (3,2), дараа нь (5,4); буруу `best=present` утгууд 3 ба 5 өгсөн ч эцсийн `best >= 5` салаа зөв хувилбарын адил үнэн тул гаралт 8 хэвээр. `singleDayAtThreshold` ба `fiveDaysBelowThreshold`-д best шинэчлэгдэх бүрд `present=streak`; хоосон болон бүх таслалтын тестэд best шинэчлэгдэхгүй. Бүрэн лог: `results/mvn-test-M2.txt`. |
 | M2-ийн нэмэлт шалгалт | `separatedRunsDoNotEarnStreakBonus`-г нэмсний дараах 10 тестээс тэр тест expected 5, was 8 гэж унав. | `present=5`, хамгийн урт `streak=3`; буруу хувилбар 3-аас ихгүй streak-ийн оронд `present`-ийг `best` болгодог. Лог: `results/mvn-test-M2-kill.txt`. |
 | M3 `int total = present + best;` нэмэх | 10 тест бүгд тэнцэв. | Dead definition ажиглагдах үр дүн өөрчлөхгүй тул unit test барихгүй. `javac` ч алдаа/unused warning гаргаагүй. |
 
@@ -135,5 +135,3 @@ M3-ийг static analysis илрүүлнэ. PMD `UnusedLocalVariable` дүрми
 ## Дүгнэлт
 
 DU анализ нь хувьсагчийн тодорхойлолт аль хэрэглээнд хүрч байгааг тодорхой харуулдаг. Branch хамралт нь шийдвэрийн салааг тоолдог ч аль definition аль use-д хүрснийг хэлдэггүй. All-defs нь definition бүрийн дор хаяж нэг хэрэглээг шалгадаг бөгөөд бүх def-use хосыг батлахгүй. All-DU-pairs хүснэгт илүү нарийн нотолгоо өгдөг ч зам, давталтын kill болон биелэшгүй хосыг гараар ялгах цаг шаарддаг. `best = present` мутаци бүх эхний DU тестийг давсан нь хосын хамралт дангаараа зөв үр дүнг батлахгүйг харууллаа. Тусгай B8 тест `present=5`, хамгийн урт цуваа 3 гэсэн өгөгдлөөр алдааг илрүүлсэн. `total` мутаци тестэд нөлөөлөөгүй тул PMD-ийн unused-local дүрэм хэрэг болов.
-
-
