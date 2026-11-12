@@ -83,32 +83,45 @@ Bonus-ийн all-defs-д **2 тест зайлшгүй**. `score`-ийн 49-р �
 | 54 | `score = score + 3` | өмнөх `score` c-use |
 | 56 | — | `score` c-use |
 
-| ID | Хувьсагч | Def→Use | Төрөл, def-clear зам | Хамрах тест |
+| ID | Хувьсагч | Def→Use | Төрөл, def-clear зам | Хамрах тест | Хамрагдсан |
 |---|---|---|---|---|
-| BDU01 | attendance | 31→32 | p-use T/F | `nullAttendance`; `allDefsMixedRun` |
-| BDU02 | attendance | 31→38 | p-use T/F | `allDefsMixedRun`; `allDefsEmpty` |
-| BDU03 | threshold | 31→32 | p-use T/F, attendance non-null салаанд | `negativeThreshold`; `allDefsMixedRun` |
-| BDU04 | threshold | 31→50 | p-use T/F | `allDefsMixedRun`; `allDefsEmpty` |
-| BDU05 | present | 35→40 | c-use, эхний ирцтэй өдөр | `singleDayAtThreshold`; `allDefsMixedRun` |
-| BDU06 | present | 35→50 | p-use, давталтад шинэчлээгүй | `allDefsEmpty`; `allAbsentZeroThreshold` |
-| BDU07 | present | 40→40 | c-use, дараагийн өдөр ирсэн | `allDefsMixedRun`; `fiveDaysBelowThreshold` |
-| BDU08 | present | 40→50 | p-use, давталтын төгсгөл | `allDefsMixedRun`; `fiveDaysBelowThreshold` |
-| BDU09 | streak | 36→41 | c-use, эхний ирцтэй өдөр | `singleDayAtThreshold`; `allDefsMixedRun` |
-| BDU10 | streak | 41→41 | c-use, дараалсан ирц | `allDefsMixedRun`; `fiveDaysBelowThreshold` |
-| BDU11 | streak | 41→42 | p-use T/F | `allDefsMixedRun` |
-| BDU12 | streak | 41→43 | c-use, нөхцөл үнэн | `allDefsMixedRun`; `fiveDaysBelowThreshold` |
-| BDU13 | streak | 46→41 | c-use, тасалсны дараах өдөр | `allDefsMixedRun` |
-| BDU14 | best | 37→42 | p-use T | `singleDayAtThreshold`; `allDefsMixedRun` |
-| BDU15 | best | 37→53 | p-use F, хоосон давталт | `allDefsEmpty`; `allAbsentZeroThreshold` |
-| BDU16 | best | 43→42 | p-use T/F, дараагийн давталтын алхам | `allDefsMixedRun` |
-| BDU17 | best | 43→53 | p-use T/F | `allDefsMixedRun`; `singleDayAtThreshold`; `fiveDaysBelowThreshold` |
-| BDU18 | a | 38→39 | p-use T/F | `allDefsMixedRun`; `allAbsentZeroThreshold` |
-| BDU19 | score | 49→54 | c-use, 50-р мөр F, 53-р мөр T | `fiveDaysBelowThreshold` |
-| BDU20 | score | 49→56 | c-use, 50 ба 53-р мөр F | `allDefsEmpty` |
-| BDU21 | score | 51→54 | c-use, 50 ба 53-р мөр T | `allDefsMixedRun` |
-| BDU22 | score | 51→56 | c-use, 50-р мөр T, 53-р мөр F | `singleDayAtThreshold`; `allAbsentZeroThreshold` |
-| BDU23 | score | 54→56 | c-use, оноонд 3 нэмсний дараа | `allDefsMixedRun`; `fiveDaysBelowThreshold` |
+| BDU01 | attendance | 31→32 | p-use T/F | `nullAttendance`; `allDefsMixedRun` | Тийм |
+| BDU02 | attendance | 31→38 | p-use T/F | `allDefsMixedRun`; `allDefsEmpty` | Тийм |
+| BDU03 | threshold | 31→32 | p-use T/F, attendance non-null салаанд | `negativeThreshold`; `allDefsMixedRun` | Тийм |
+| BDU04 | threshold | 31→50 | p-use T/F | `allDefsMixedRun`; `allDefsEmpty` | Тийм |
+| BDU05 | present | 35→40 | c-use, эхний ирцтэй өдөр | `singleDayAtThreshold`; `allDefsMixedRun` | Тийм |
+| BDU06 | present | 35→50 | p-use, давталтад шинэчлээгүй | `allDefsEmpty`; `allAbsentZeroThreshold` | Тийм |
+| BDU07 | present | 40→40 | c-use, дараагийн өдөр ирсэн | `allDefsMixedRun`; `fiveDaysBelowThreshold` | Тийм |
+| BDU08 | present | 40→50 | p-use, давталтын төгсгөл | `allDefsMixedRun`; `fiveDaysBelowThreshold` | Тийм |
+| BDU09 | streak | 36→41 | c-use, эхний ирцтэй өдөр | `singleDayAtThreshold`; `allDefsMixedRun` | Тийм |
+| BDU10 | streak | 41→41 | c-use, дараалсан ирц | `allDefsMixedRun`; `fiveDaysBelowThreshold` | Тийм |
+| BDU11 | streak | 41→42 | p-use T/F | `allDefsMixedRun` | Тийм |
+| BDU12 | streak | 41→43 | c-use, нөхцөл үнэн | `allDefsMixedRun`; `fiveDaysBelowThreshold` | Тийм |
+| BDU13 | streak | 46→41 | c-use, тасалсны дараах өдөр | `allDefsMixedRun` | Тийм |
+| BDU14 | best | 37→42 | p-use T | `singleDayAtThreshold`; `allDefsMixedRun` | Тийм |
+| BDU15 | best | 37→53 | p-use F, хоосон давталт | `allDefsEmpty`; `allAbsentZeroThreshold` | Тийм |
+| BDU16 | best | 43→42 | p-use T/F, дараагийн давталтын алхам | `allDefsMixedRun` | Тийм |
+| BDU17 | best | 43→53 | p-use T/F | `allDefsMixedRun`; `singleDayAtThreshold`; `fiveDaysBelowThreshold` | Тийм |
+| BDU18 | a | 38→39 | p-use T/F | `allDefsMixedRun`; `allAbsentZeroThreshold` | Тийм |
+| BDU19 | score | 49→54 | c-use, 50-р мөр F, 53-р мөр T | `fiveDaysBelowThreshold` | Тийм |
+| BDU20 | score | 49→56 | c-use, 50 ба 53-р мөр F | `allDefsEmpty` | Тийм |
+| BDU21 | score | 51→54 | c-use, 50 ба 53-р мөр T | `allDefsMixedRun` | Тийм |
+| BDU22 | score | 51→56 | c-use, 50-р мөр T, 53-р мөр F | `singleDayAtThreshold`; `allAbsentZeroThreshold` | Тийм |
+| BDU23 | score | 54→56 | c-use, оноонд 3 нэмсний дараа | `allDefsMixedRun`; `fiveDaysBelowThreshold` | Тийм |
 
 46-р мөрийн `streak = 0` нь өмнөх `streak`-ийн definition-үүдийг kill хийнэ (36 эсвэл 41-р мөрөөс ирсэн утга). Мөн 46-р мөр өөрөө шинэ `streak` definition. Энэ нь `present` болон `best`-ийг kill хийхгүй. `streak:36→42` болон `streak:46→42` def-clear хос биш: нөхцөл 42 хүрэхээс өмнө дараагийн эерэг өдөр 41-р мөрд `streak`-ийг дахин тодорхойлно. `best:37→42`-ын F салаа биелэхгүй: анхны эерэг өдөр `streak` хамгийн багадаа 1, `best` 0 тул нөхцөл үнэн; харин эерэг өдөр байхгүй бол 42-р мөрд хүрэхгүй. `best:37→53`-ын T салаа ч биелэхгүй: `best >= 5` болох бүх зам 43-р мөрийн шинэ definition-ээр 37-р мөрийн утгыг kill хийнэ.
 
 `B1 allDefsMixedRun`, `B2 allDefsEmpty`, `B3 singleDayAtThreshold`, `B4 fiveDaysBelowThreshold`, `B5 nullAttendance`, `B6 negativeThreshold`, `B7 allAbsentZeroThreshold` гэсэн 7 bonus тест хүснэгтийн боломжтой бүх хос/салааг хамарлаа. `results/mvn-verify-alldupairs.txt`-д нийт 9 тест ногоон; `results/jacoco-alldupairs.csv`-д `DataFlowTargets` branch 16/16, line 23/24. Үлдсэн ганц мөр нь 7-р мөрийн implicit constructor; үүнийг хамруулахын тулд объект үүсгэх нэмэлт тест бичих шаардлагагүй.
+
+## C. Fault seeding
+
+Мутаци бүрийг ганцаар нь `DataFlowTargets.java` дээр хийж `mvn test` ажиллуулаад, дараа нь файлыг `git restore`-оор сэргээв. Үр дүнгүүд:
+
+| Мутаци | Тестийн үр дүн | Дүгнэлт |
+|---|---|---|
+| M1 `streak = streak + 1`-ийг устгах | 9 тестээс 2 унав. `allDefsMixedRun`: expected 8, was 5; `fiveDaysBelowThreshold`: expected 3, was 0. | Дутуу update-ийг DU тестүүд илрүүлэв. Бүрэн лог: `results/mvn-test-M1.txt`. |
+| M2 `best = streak` → `best = present` | Эхний all-DU-pairs багцын 9 тест бүгд тэнцэв. | Бүх DU хос хамарсан ч өгөгдлийн утгын алдаа илрэх баталгаа биш. `results/mvn-test-M2.txt`. |
+| M2-ийн нэмэлт шалгалт | `separatedRunsDoNotEarnStreakBonus`-г нэмсний дараах 10 тестээс тэр тест expected 5, was 8 гэж унав. | `present=5`, хамгийн урт `streak=3`; буруу хувилбар 3-аас ихгүй streak-ийн оронд `present`-ийг `best` болгодог. Лог: `results/mvn-test-M2-kill.txt`. |
+| M3 `int total = present + best;` нэмэх | 10 тест бүгд тэнцэв. | Dead definition ажиглагдах үр дүн өөрчлөхгүй тул unit test барихгүй. `javac` ч алдаа/unused warning гаргаагүй. |
+
+M3-ийг static analysis илрүүлнэ. PMD `UnusedLocalVariable` дүрмийн тайлан `results/pmd-M3.xml`-д энэ зөрчлийг ингэж тэмдэглэсэн: **“Avoid unused local variables such as 'total'.”** Maven-ийн шинжилгээний лог `results/static-analysis-M3.txt`-д байна. Туршилтын дараа `git diff -- src/main/java/mn/edu/must/sqat/DataFlowTargets.java` хоосон; эцсийн source starter-тэй ижил.

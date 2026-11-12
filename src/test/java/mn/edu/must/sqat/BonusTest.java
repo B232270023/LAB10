@@ -48,4 +48,10 @@ class BonusTest {
     void allAbsentZeroThreshold() {
         assertEquals(5, DataFlowTargets.bonus(new int[]{0, -2}, 0));
     }
+
+    @Test
+    @DisplayName("B8 separatedRunsDoNotEarnStreakBonus: present=5 but best=3")
+    void separatedRunsDoNotEarnStreakBonus() {
+        assertEquals(5, DataFlowTargets.bonus(new int[]{1, 1, 0, 1, 1, 1}, 5));
+    }
 }
