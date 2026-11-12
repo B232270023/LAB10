@@ -49,3 +49,11 @@ OS name: "windows 11", version: "10.0", arch: "amd64", family: "windows"
 ## B. `bonus` — анализ ба туршилт
 
 Үр дүнг all-defs, all-DU-pairs, fault seeding гэсэн дараалсан үе шат болон тусдаа commit-уудаар баримтжуулна.
+
+### B4. All-defs туршилтын шат
+
+`BonusTest`-ийн эхний хоёр тест all-defs-ийг хангана. `B1 allDefsMixedRun`-д `attendance={1,0,1,1,1,1,1}`, `threshold=6`; ирсэн өдөр 6, хамгийн урт дараалал 5 тул оноо 8. Энэ зам параметрүүд болон `present`, `streak`, `best`, `a`, `score`-ийн бүх definition-ээс дор хаяж нэг use-д хүрнэ. `B2 allDefsEmpty`-д `attendance={}`, `threshold=1`; хоосон давталтын дараах анхны `present`, `best`, `score` definition-үүд хэрэг болно.
+
+Bonus-ийн all-defs-д **2 тест зайлшгүй**. `score`-ийн 49-р мөрийн definition хэрэглэхийн тулд `present >= threshold` нөхцөл худал байх ёстой. Үнэн бол 51-р мөр `score`-ийг use-д хүрэхээс өмнө дахин тодорхойлно. Харин 51-р мөрийн definition-ийг use-д хүргэхэд уг нөхцөл үнэн байх шаардлагатай. Нөхцөл давталтын дараа нэг удаа л шалгагддаг тул нэг дуудлага хоёр score definition-ийг хоёуланг нь use-д хүргэх боломжгүй. Хоёр тестээр бусад бүх definition-ийг мөн use-д хүргэсэн.
+
+`results/mvn-verify-alldefs.txt`-д нийт 4 тест амжилттай (gcd 2, bonus 2) гэж гарсан. `results/jacoco-alldefs.csv`-ийн `DataFlowTargets` мөр: branch 14/16 (2 missed), line 22/24 (2 missed). All-defs нь branch-ийн 100%-ийг батлахгүй: жишээ нь `best >= 5`-ийн үнэн, худал үр дүнг энэ шат хоёуланг нь дайраагүй.
