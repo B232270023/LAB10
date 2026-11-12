@@ -57,3 +57,58 @@ OS name: "windows 11", version: "10.0", arch: "amd64", family: "windows"
 Bonus-ийн all-defs-д **2 тест зайлшгүй**. `score`-ийн 49-р мөрийн definition хэрэглэхийн тулд `present >= threshold` нөхцөл худал байх ёстой. Үнэн бол 51-р мөр `score`-ийг use-д хүрэхээс өмнө дахин тодорхойлно. Харин 51-р мөрийн definition-ийг use-д хүргэхэд уг нөхцөл үнэн байх шаардлагатай. Нөхцөл давталтын дараа нэг удаа л шалгагддаг тул нэг дуудлага хоёр score definition-ийг хоёуланг нь use-д хүргэх боломжгүй. Хоёр тестээр бусад бүх definition-ийг мөн use-д хүргэсэн.
 
 `results/mvn-verify-alldefs.txt`-д нийт 4 тест амжилттай (gcd 2, bonus 2) гэж гарсан. `results/jacoco-alldefs.csv`-ийн `DataFlowTargets` мөр: branch 14/16 (2 missed), line 22/24 (2 missed). All-defs нь branch-ийн 100%-ийг батлахгүй: жишээ нь `best >= 5`-ийн үнэн, худал үр дүнг энэ шат хоёуланг нь дайраагүй.
+
+### B1–B3. CFG, def/use жагсаалт, all-DU-pairs
+
+`cfg-bonus.png` дахь CFG нь for-each-ийн 38-р мөрийг `attendance`-ийн дараагийн элементийн p-use, алхмыг `a`-ийн шинэ definition гэж үзүүлэв. Цэнхэр ногоон ирмэгийн тайлбарт тухайн урсгалыг бодитоор дайрах тестийн методын нэрийг бичив.
+
+| Мөр | Definition | Use |
+|---:|---|---|
+| 31 | `attendance`, `threshold` параметр | — |
+| 32 | — | `attendance == null` p-use; attendance null биш үед `threshold < 0` p-use |
+| 35 | `present = 0` | — |
+| 36 | `streak = 0` | — |
+| 37 | `best = 0` | — |
+| 38 | `a`-д дараагийн элементийг онооно | `attendance`-д дараагийн элемент байгаа эсэх p-use |
+| 39 | — | `a > 0` p-use |
+| 40 | `present = present + 1` | `present` c-use |
+| 41 | `streak = streak + 1` | `streak` c-use |
+| 42 | — | `streak > best`: `streak`, `best` p-use |
+| 43 | `best = streak` | `streak` c-use |
+| 46 | `streak = 0` | — |
+| 49 | `score = 0` | — |
+| 50 | — | `present >= threshold`: хоёул p-use |
+| 51 | `score = 5` | — |
+| 53 | — | `best >= 5` p-use |
+| 54 | `score = score + 3` | өмнөх `score` c-use |
+| 56 | — | `score` c-use |
+
+| ID | Хувьсагч | Def→Use | Төрөл, def-clear зам | Хамрах тест |
+|---|---|---|---|---|
+| BDU01 | attendance | 31→32 | p-use T/F | `nullAttendance`; `allDefsMixedRun` |
+| BDU02 | attendance | 31→38 | p-use T/F | `allDefsMixedRun`; `allDefsEmpty` |
+| BDU03 | threshold | 31→32 | p-use T/F, attendance non-null салаанд | `negativeThreshold`; `allDefsMixedRun` |
+| BDU04 | threshold | 31→50 | p-use T/F | `allDefsMixedRun`; `allDefsEmpty` |
+| BDU05 | present | 35→40 | c-use, эхний ирцтэй өдөр | `singleDayAtThreshold`; `allDefsMixedRun` |
+| BDU06 | present | 35→50 | p-use, давталтад шинэчлээгүй | `allDefsEmpty`; `allAbsentZeroThreshold` |
+| BDU07 | present | 40→40 | c-use, дараагийн өдөр ирсэн | `allDefsMixedRun`; `fiveDaysBelowThreshold` |
+| BDU08 | present | 40→50 | p-use, давталтын төгсгөл | `allDefsMixedRun`; `fiveDaysBelowThreshold` |
+| BDU09 | streak | 36→41 | c-use, эхний ирцтэй өдөр | `singleDayAtThreshold`; `allDefsMixedRun` |
+| BDU10 | streak | 41→41 | c-use, дараалсан ирц | `allDefsMixedRun`; `fiveDaysBelowThreshold` |
+| BDU11 | streak | 41→42 | p-use T/F | `allDefsMixedRun` |
+| BDU12 | streak | 41→43 | c-use, нөхцөл үнэн | `allDefsMixedRun`; `fiveDaysBelowThreshold` |
+| BDU13 | streak | 46→41 | c-use, тасалсны дараах өдөр | `allDefsMixedRun` |
+| BDU14 | best | 37→42 | p-use T | `singleDayAtThreshold`; `allDefsMixedRun` |
+| BDU15 | best | 37→53 | p-use F, хоосон давталт | `allDefsEmpty`; `allAbsentZeroThreshold` |
+| BDU16 | best | 43→42 | p-use T/F, дараагийн давталтын алхам | `allDefsMixedRun` |
+| BDU17 | best | 43→53 | p-use T/F | `allDefsMixedRun`; `singleDayAtThreshold`; `fiveDaysBelowThreshold` |
+| BDU18 | a | 38→39 | p-use T/F | `allDefsMixedRun`; `allAbsentZeroThreshold` |
+| BDU19 | score | 49→54 | c-use, 50-р мөр F, 53-р мөр T | `fiveDaysBelowThreshold` |
+| BDU20 | score | 49→56 | c-use, 50 ба 53-р мөр F | `allDefsEmpty` |
+| BDU21 | score | 51→54 | c-use, 50 ба 53-р мөр T | `allDefsMixedRun` |
+| BDU22 | score | 51→56 | c-use, 50-р мөр T, 53-р мөр F | `singleDayAtThreshold`; `allAbsentZeroThreshold` |
+| BDU23 | score | 54→56 | c-use, оноонд 3 нэмсний дараа | `allDefsMixedRun`; `fiveDaysBelowThreshold` |
+
+46-р мөрийн `streak = 0` нь өмнөх `streak`-ийн definition-үүдийг kill хийнэ (36 эсвэл 41-р мөрөөс ирсэн утга). Мөн 46-р мөр өөрөө шинэ `streak` definition. Энэ нь `present` болон `best`-ийг kill хийхгүй. `streak:36→42` болон `streak:46→42` def-clear хос биш: нөхцөл 42 хүрэхээс өмнө дараагийн эерэг өдөр 41-р мөрд `streak`-ийг дахин тодорхойлно. `best:37→42`-ын F салаа биелэхгүй: анхны эерэг өдөр `streak` хамгийн багадаа 1, `best` 0 тул нөхцөл үнэн; харин эерэг өдөр байхгүй бол 42-р мөрд хүрэхгүй. `best:37→53`-ын T салаа ч биелэхгүй: `best >= 5` болох бүх зам 43-р мөрийн шинэ definition-ээр 37-р мөрийн утгыг kill хийнэ.
+
+`B1 allDefsMixedRun`, `B2 allDefsEmpty`, `B3 singleDayAtThreshold`, `B4 fiveDaysBelowThreshold`, `B5 nullAttendance`, `B6 negativeThreshold`, `B7 allAbsentZeroThreshold` гэсэн 7 bonus тест хүснэгтийн боломжтой бүх хос/салааг хамарлаа. `results/mvn-verify-alldupairs.txt`-д нийт 9 тест ногоон; `results/jacoco-alldupairs.csv`-д `DataFlowTargets` branch 16/16, line 23/24. Үлдсэн ганц мөр нь 7-р мөрийн implicit constructor; үүнийг хамруулахын тулд объект үүсгэх нэмэлт тест бичих шаардлагагүй.
